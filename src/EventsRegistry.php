@@ -38,7 +38,6 @@ class EventsRegistry
      */
     public function on(string $event): Event
     {
-        $event = $this->normalizeEventName($event);
         if (array_key_exists($event, $this->events)) {
             return $this->events[$event];
         }
@@ -52,7 +51,7 @@ class EventsRegistry
      */
     public function has(string $event): bool
     {
-        return array_key_exists($this->normalizeEventName($event), $this->events);
+        return array_key_exists($event, $this->events);
     }
 
     /**
@@ -61,15 +60,6 @@ class EventsRegistry
      */
     public function clear(Event|string $event): void
     {
-        unset($this->events[$this->normalizeEventName($event instanceof Event ? $event->name : $event)]);
-    }
-
-    /**
-     * @param string $name
-     * @return string
-     */
-    private function normalizeEventName(string $name): string
-    {
-        return strtolower($name);
+        unset($this->events[$event instanceof Event ? $event->name : $event]);
     }
 }
