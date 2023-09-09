@@ -32,7 +32,22 @@ class EventListenersTest extends \PHPUnit\Framework\TestCase
             });
         }
 
-        $this->assertEquals(3, $event1->trigger(), "Number of listeners");
+        $event2 = $registry->on("another.event");
+        // Add listeners
+        for ($i = 0; $i < 6; $i++) {
+            $event2->listen(function () {
+            });
+        }
+
+
+        $this->assertEquals(3, $event1->trigger(), "Event A listeners count");
+        $this->assertEquals(6, $event2->trigger(), "Event B listeners count");
+        $event1->purgeAllListeners();
+        $this->assertEquals(0, $event1->trigger(), "Event A listeners zero");
+        $this->assertEquals(6, $event2->trigger(), "Event B listeners still 6");
+        $event2->purgeAllListeners();
+        $this->assertEquals(0, $event1->trigger(), "Event A listeners 0");
+        $this->assertEquals(0, $event2->trigger(), "Event B listeners 0");
     }
 
     /**

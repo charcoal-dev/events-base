@@ -4,6 +4,7 @@ workspace/
 composer.phar
 composer.lock
 
+phpunit.phar
 /.phpunit.result.cache
 /coverage/
 /coverage.xml
