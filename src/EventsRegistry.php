@@ -20,7 +20,7 @@ namespace Charcoal\Events;
  */
 class EventsRegistry
 {
-    private array $events = [];
+    protected array $events = [];
 
     /**
      * @param \Charcoal\Events\ListenerThrowEnum $listenerExHandling
@@ -61,5 +61,13 @@ class EventsRegistry
     public function clear(Event|string $event): void
     {
         unset($this->events[$event instanceof Event ? $event->name : $event]);
+    }
+
+    /**
+     * @return void
+     */
+    public function purgeAll(): void
+    {
+        $this->events = [];
     }
 }

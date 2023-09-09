@@ -24,13 +24,48 @@ class Event
      * @param \Charcoal\Events\EventsRegistry $registry
      * @param string $name
      * @param array $listeners
+     * @param bool $purgeListenersOnSerialize
      */
     public function __construct(
         public readonly EventsRegistry $registry,
         public readonly string         $name,
         private array                  $listeners = [],
+        public bool                    $purgeListenersOnSerialize = true
     )
     {
+    }
+
+    /**
+     * @return array
+     */
+    public function __serialize(): array
+    {
+        return [
+            "registry" => $this->registry,
+            "name" => $this->name,
+            "listeners" => $this->purgeListenersOnSerialize ? [] : $this->listeners,
+            "purgeListenersOnSerialize" => $this->purgeListenersOnSerialize
+        ];
+    }
+
+    /**
+     * @param array $data
+     * @return void
+     */
+    public function __unserialize(array $data): void
+    {
+        $this->registry = $data["registry"];
+        $this->name = $data["name"];
+        $this->purgeListenersOnSerialize = $data["purgeListenersOnSerialize"];
+        $this->listeners = $this->purgeListenersOnSerialize ? [] : $data["listeners"];
+    }
+
+    /**
+     * @return void
+     */
+    public function purgeAllListeners(): void
+    {
+        $this->listeners = [];
     }
 
     /**
