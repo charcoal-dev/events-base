@@ -32,6 +32,27 @@ class EventsRegistry
     }
 
     /**
+     * @return array
+     */
+    public function __serialize(): array
+    {
+        return [
+            "events" => $this->events,
+            "listenerExHandling" => $this->listenerExHandling,
+        ];
+    }
+
+    /**
+     * @param array $data
+     * @return void
+     */
+    public function __unserialize(array $data): void
+    {
+        $this->events = $data["events"];
+        $this->listenerExHandling = $data["listenerExHandling"];
+    }
+
+    /**
      * Create a new Event instance or retrieves existing one.
      * @param string $event
      * @return Event
