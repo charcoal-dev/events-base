@@ -26,7 +26,7 @@ class EventsRegistry
      * @param \Charcoal\Events\ListenerThrowEnum $listenerExHandling
      */
     public function __construct(
-        public readonly ListenerThrowEnum $listenerExHandling = ListenerThrowEnum::THROW_PREV,
+        public ListenerThrowEnum $listenerExHandling = ListenerThrowEnum::THROW_PREV,
     )
     {
     }
