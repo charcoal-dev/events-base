@@ -71,12 +71,27 @@ class Event
     /**
      * Binds a callback method to this event
      * @param callable $callback
-     * @return $this
+     * @return string
      */
-    public function listen(callable $callback): static
+    public function listen(callable $callback): string
     {
-        $this->listeners[] = $callback;
-        return $this;
+        $uniqId = uniqid("event_" . $this->name);
+        $this->listeners[$uniqId] = $callback;
+        return $uniqId;
+    }
+
+    /**
+     * @param string $uniqId
+     * @return bool
+     */
+    public function unsubscribe(string $uniqId): bool
+    {
+        if (isset($this->listeners[$uniqId])) {
+            unset($this->listeners[$uniqId]);
+            return true;
+        }
+
+        return false;
     }
 
     /**
